@@ -1,4 +1,4 @@
-package com.ayan.architectureapp.restaurant;
+package com.ayan.architectureapp.api;
 
 public interface ApiListener {
 

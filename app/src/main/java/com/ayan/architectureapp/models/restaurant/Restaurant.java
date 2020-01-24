@@ -1,13 +1,50 @@
 package com.ayan.architectureapp.models.restaurant;
 
-public class Restaurant {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Restaurant implements Parcelable {
 
     String restaurantName = "";
     String image = "";
     String photoReference = "";
     String vicinity = "";
     Double latitude;
+
     Double longitude;
+
+    public Restaurant(Parcel in) {
+        restaurantName = in.readString();
+        image = in.readString();
+        photoReference = in.readString();
+        vicinity = in.readString();
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+    }
+
+    public Restaurant(){
+
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public String getRestaurantName() {
         return restaurantName;
@@ -55,5 +92,30 @@ public class Restaurant {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(restaurantName);
+        parcel.writeString(image);
+        parcel.writeString(photoReference);
+        parcel.writeString(vicinity);
+        if (latitude == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(longitude);
+        }
     }
 }

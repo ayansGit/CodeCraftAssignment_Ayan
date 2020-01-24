@@ -1,9 +1,6 @@
-package com.ayan.architectureapp.restaurant;
+package com.ayan.architectureapp.api;
 
-import android.content.Context;
 import android.os.AsyncTask;
-
-import com.ayan.architectureapp.location.LocationHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +40,7 @@ public class ApiHelper {
         protected String doInBackground(String... strings) {
             String result = "";
             try {
-                result = ApiHelper.getRequest(strings[0]);
+                result = getRequest(strings[0]);
             } catch (IOException e) {
                 e.printStackTrace();
                 isError = true;
@@ -70,7 +67,6 @@ public class ApiHelper {
 
         StringBuilder sb = new StringBuilder();
         HttpURLConnection con = (HttpURLConnection) (new URL(serverUrl)).openConnection();
-        con.setConnectTimeout(30000);
         con.connect();
         int resCode = con.getResponseCode();
         InputStream in;
@@ -90,6 +86,7 @@ public class ApiHelper {
             e.printStackTrace();
         }
         con.disconnect();
+
         return sb.toString();
     }
 

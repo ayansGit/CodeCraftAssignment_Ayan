@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ArchitectureApp</string>
+    <string name="google_maps_key">AIzaSyAScRuQYUp8ckj4tM2Y5vyVembbTtgzEIY</string>
+    <string name="google_maps_key2">AIzaSyAwiPRK9MtWX7Sa-KZ0LkzLyxYo2bnOuEM</string>
 </resources>

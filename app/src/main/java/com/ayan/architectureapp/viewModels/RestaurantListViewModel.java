@@ -1,4 +1,4 @@
-package com.ayan.architectureapp.restaurantList;
+package com.ayan.architectureapp.viewModels;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,9 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.ayan.architectureapp.models.location.CurrentLocation;
-import com.ayan.architectureapp.location.LocationRepository;
-import com.ayan.architectureapp.models.restaurant.RestaurantResponse;
-import com.ayan.architectureapp.restaurant.RestaurantRepository;
+import com.ayan.architectureapp.repositories.LocationRepository;
+import com.ayan.architectureapp.models.restaurant.Restaurant;
+import com.ayan.architectureapp.repositories.RestaurantRepository;
+
+import java.util.List;
 
 public class RestaurantListViewModel extends AndroidViewModel {
 
@@ -35,8 +37,8 @@ public class RestaurantListViewModel extends AndroidViewModel {
         locationRepository.onLocationAvailable();
     }
 
-    public LiveData<RestaurantResponse> getRestaurantList(Double lat, Double lng, String nextPageToken){
-        return restaurantRepository.getRestaurantList(lat,lng,nextPageToken);
+    public LiveData<List<Restaurant>> getRestaurantList(Double lat, Double lng, Boolean onRefreshed){
+        return restaurantRepository.getRestaurantList(lat,lng,onRefreshed);
     }
 
 

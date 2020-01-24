@@ -1,4 +1,4 @@
-package com.ayan.architectureapp.restaurant;
+package com.ayan.architectureapp.repositories;
 
 import android.app.Application;
 import android.util.Log;
@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.ayan.architectureapp.models.restaurant.Restaurant;
 import com.ayan.architectureapp.models.restaurant.RestaurantResponse;
+import com.ayan.architectureapp.api.ApiHelper;
+import com.ayan.architectureapp.api.ApiListener;
 import com.ayan.architectureapp.utils.Constants;
 
 import org.json.JSONArray;
@@ -20,15 +22,19 @@ public class RestaurantRepository {
 
     public static final String LOG ="RestaurantRepository";
     private Application application;
-    private MutableLiveData<RestaurantResponse> restaurantResponseMutableLiveData;
+    private MutableLiveData<List<Restaurant>> restaurantResponseMutableLiveData;
+    private static String nextPageToken = "";
 
     public RestaurantRepository(Application application) {
         this.application = application;
-        restaurantResponseMutableLiveData = new MutableLiveData<>();
     }
 
 
-    public MutableLiveData<RestaurantResponse> getRestaurantList(Double lat, Double lng, String nextPageToken) {
+    public MutableLiveData<List<Restaurant>> getRestaurantList(Double lat, Double lng, Boolean onRefreshed) {
+        restaurantResponseMutableLiveData = new MutableLiveData<>();
+        if(onRefreshed)
+            nextPageToken = "";
+
         StringBuilder url = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=restaurant&key=");
         url.append(Constants.GOOGLE_API_KEY);
         url.append("&rankby=distance&location=");
@@ -66,7 +72,9 @@ public class RestaurantRepository {
                     }
                     restaurantResponse.setNextPageToken(nextPageToken);
                     restaurantResponse.setRestaurantList(restaurantList);
-                    restaurantResponseMutableLiveData.setValue(restaurantResponse);
+                    RestaurantRepository.nextPageToken = nextPageToken;
+                    Log.d(LOG, response);
+                    restaurantResponseMutableLiveData.setValue(restaurantList);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -76,7 +84,7 @@ public class RestaurantRepository {
             @Override
             public void onFailure(String message) {
                 Log.d(LOG, message);
-                restaurantResponseMutableLiveData.setValue(new RestaurantResponse(message));
+
             }
         });
 

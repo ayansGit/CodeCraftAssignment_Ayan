@@ -7,7 +7,8 @@
     android:gravity="center_vertical"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    android:id="@+id/llItem">
 
     <ImageView
         android:id="@+id/ivRestaurantImage"
